@@ -26,11 +26,11 @@ class AuthController extends Controller
             'password' => bcrypt(($attrs['password']))
         ]);
 
+        $user['token'] = $user->createToken('secret')->plainTextToken;
+
         //return user & token in response
-        return response([
-            'user' => $user,
-            'token' => $user->createToken('secret')->plainTextToken
-        ], 200);
+        return response(
+        $user, 200);
     }
 
     public function login(Request $request)
@@ -47,11 +47,12 @@ class AuthController extends Controller
             ], 403);
         }
 
+        $user = auth()->user();
+        $user['token'] = auth()->user()->createToken('secret')->plainTextToken;
         //return user & token in response
-        return response([
-            'user' => auth()->user(),
-            'token' => auth()->user()->createToken('secret')->plainTextToken
-        ], 200);
+        return response(
+            $user
+        , 200);
     }
 
     //logout
@@ -66,8 +67,19 @@ class AuthController extends Controller
     // get user detail
     public function user()
     {
-        return response([
-            'user' => auth()->user()
-        ], 200);
+        return response(
+            auth()->user()
+        , 200);
+    }
+
+    public function update(Request $request){
+        $user = auth()->user();
+        $user->update([
+            'name'=>$request['name'],
+            'email'=>$request['email'],
+            'image'=>$this->saveImage($request->image, 'profiles')
+        ]);
+
+        return response($user, 200);
     }
 }

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
             $table->integer('project_id');
             $table->string('activity_name');
+            $table->string('activity_description')->nullable();
             $table->string('activity_url')->nullable();
             $table->date('activity_plan_startDate');
             $table->date('activity_plan_endDate');
             $table->date('activity_real_startDate')->nullable();
             $table->date('activity_real_endDate')->nullable();
-            $table->timestamps();
+            $table->string('activity_status');
         });
     }
 

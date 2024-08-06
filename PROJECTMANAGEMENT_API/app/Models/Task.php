@@ -7,20 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    public $timestamps=false;
     use HasFactory;
 
     protected $fillable=[
-        'user_id',
-        'project_id',
         'activity_id',
-        'task_id',
         'task_name',
         'task_status'
     ];
 
-    /*
-    public function user(){
-        return $this->belongsTo(User::class);
-    }*/
-    
+    public function activity(){
+        return $this->BelongsTo(Activity::class);
+    }    
 }
